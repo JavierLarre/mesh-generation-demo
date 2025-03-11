@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Perlin Noise Test"
-run/main_scene="res://scenes/noise_test.tscn"
+config/name="Mesh Generation Demo"
+run/main_scene="uid://ty22uem7idcf"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
