@@ -1,5 +1,5 @@
 # Mesh Generation demo
-Mesh generation script in godot using perlin noise with FastNoiseLite
+Mesh generation in GDscript using perlin noise with FastNoiseLite.
 
 ## Scripts
 I used two custom classes for this project:
@@ -7,8 +7,8 @@ I used two custom classes for this project:
 2. [MeshGenerator](https://github.com/JavierLarre/mesh-generation-demo/blob/master/scripts/mesh_generator.gd) encapsules the generation logic. It recieves a FastNoiseLite object in the constructor to place the vertices.
 
 Plus, there are two scenes:
-1. [noise_test](https://github.com/JavierLarre/mesh-generation-demo/blob/master/scenes/noise_test.tscn) just outputs a 2d image generated with perlin noise.
-2. [terrain_generation](https://github.com/JavierLarre/mesh-generation-demo/blob/master/scenes/terrain_generation.tscn) is the main scene containing the mesh generation. This is different to MeshGenerator, so better naming is needed.
+1. [terrain_generation](https://github.com/JavierLarre/mesh-generation-demo/blob/master/scenes/terrain_generation.tscn) is the main scene containing the mesh generation. This is different to MeshGenerator, so better naming is needed.
+2. [noise_test](https://github.com/JavierLarre/mesh-generation-demo/blob/master/scenes/noise_test.tscn) just outputs a 2d image generated with perlin noise.
 
 ## Credits
 The script was taken from [this tutorial](https://glusoft.com/godot-tutorials/make-terrain-perlin-noise-FastNoiseLite/), but the following changes were made:
