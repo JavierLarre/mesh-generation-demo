@@ -6,34 +6,44 @@ var yaw = 0.0
 var pitch = 0.0
 
 func _ready():
-	self.position = Vector3(0, 10, 100)
-	self.look_at(Vector3(0, 0, 0), Vector3.UP)
-	# Lock the mouse cursor to the center of the screen
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	position = Vector3(0, 10, 100)
+	look_at(Vector3.ZERO, Vector3.UP)
+	lock_cursor_to_screen_center()
 
 func _input(event):
-	# Handle mouse motion for looking around
 	if event is InputEventMouseMotion:
-		yaw -= event.relative.x * mouse_sensitivity
-		pitch -= event.relative.y * mouse_sensitivity
-		pitch = clamp(pitch, -89, 89)
-		rotation_degrees = Vector3(pitch, yaw, 0)
+		look_around(event)
+
+func _process(delta: float):
+	var direction := get_direction_from_input()
+	direction = normalize_and_escalate_direction(direction, delta)
+	translate(direction)
 		
-
-func _process(delta):
-	var direction = Vector3()
+func look_around(event: InputEventMouseMotion):
+	yaw -= event.relative.x * mouse_sensitivity
+	pitch -= event.relative.y * mouse_sensitivity
+	pitch = clampf(pitch, -89, 89)
+	rotation_degrees = Vector3(pitch, yaw, 0)
 	
-	# Movement controls (WASD)
-	if Input.is_action_pressed("ui_up"):
-		direction -= transform.basis.z
-	if Input.is_action_pressed("ui_down"):
-		direction += transform.basis.z
-	if Input.is_action_pressed("ui_left"):
-		direction -= transform.basis.x
-	if Input.is_action_pressed("ui_right"):
-		direction += transform.basis.x
-
-	# Normalize direction and apply movement
-	if direction.length() > 0:
-		direction = direction.normalized() * speed * delta
-		translate(direction)
+func lock_cursor_to_screen_center():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
+func get_direction_from_input() -> Vector3:
+	var transforms := get_ui_vectors()
+	var direction := Vector3()
+	for ui_input in transforms:
+		if Input.is_action_pressed(ui_input):
+			direction += transforms[ui_input]
+	return direction
+		
+func get_ui_vectors() -> Dictionary[String, Vector3]:
+	var transforms: Dictionary[String, Vector3] = {
+		"ui_up": Vector3.FORWARD,
+		"ui_down": Vector3.BACK,
+		"ui_left": Vector3.LEFT,
+		"ui_right": Vector3.RIGHT
+	}
+	return transforms
+	
+func normalize_and_escalate_direction(direction: Vector3, delta: float) -> Vector3:
+	return direction.normalized() * speed * delta
